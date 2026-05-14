@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -8,10 +8,32 @@ export function CarModel({ color = '#ff0000', ...props }: { color?: string; [key
   // We use a free Ferrari model from three.js examples
   const { nodes, materials } = useGLTF('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/ferrari.glb') as any;
   
-  // The ferrari model has a body material
-  if (materials.body) {
-    materials.body.color = new THREE.Color(color);
-  }
+  // Update colors safely when the color prop changes
+  useEffect(() => {
+    if (!materials) return;
+    
+    // Traverse all materials and update any that might be the car body
+    Object.values(materials).forEach((mat: any) => {
+      const name = mat.name.toLowerCase();
+      // The ferrari model body material is often named "body" or "paint"
+      if (name.includes('body') || name.includes('paint') || name.includes('car')) {
+        mat.color.set(color);
+        mat.needsUpdate = true;
+      }
+    });
+    
+    // Also try to find meshes directly in case material names are generic
+    if (nodes) {
+      Object.values(nodes).forEach((node: any) => {
+        if (node.isMesh && node.name.toLowerCase().includes('body')) {
+          if (node.material) {
+            node.material.color.set(color);
+            node.material.needsUpdate = true;
+          }
+        }
+      });
+    }
+  }, [color, materials, nodes]);
 
   // Find the root object
   const rootObject = nodes.Scene || nodes._rootJoint || Object.values(nodes)[0];
