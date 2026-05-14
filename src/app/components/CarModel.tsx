@@ -72,4 +72,3 @@ export function CarModel({
 }
 
 useGLTF.preload('/models/defender.glb');
-```
