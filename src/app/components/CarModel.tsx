@@ -1,75 +1,72 @@
+tsx
 import React, { useRef, useEffect } from 'react';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, ContactShadows, Environment, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
-export function CarModel({
-  color = '#111111',
-  ...props
-}: {
-  color?: string;
-  [key: string]: any;
-}) {
-
+export function CarShowroom({ color = '#111111' }: { color?: string }) {
   const group = useRef<THREE.Group>(null);
 
-  // موديل الـ Defender
-  const { scene } = useGLTF(
-  'https://rawcdn.githack.com/KhronosGroup/glTF-Sample-Models/master/2.0/Car/glTF-Binary/Car.glb'
-  );
+  // 🚗 موديل Defender المحلي
+  const { scene } = useGLTF('/models/defender.glb');
 
   useEffect(() => {
-
     if (!scene) return;
 
     scene.traverse((child: any) => {
-
       if (child.isMesh) {
-
         child.castShadow = true;
         child.receiveShadow = true;
 
-        // تغيير لون البودي فقط
-        const materialName =
-          child.material?.name?.toLowerCase?.() || '';
-
-        const meshName =
-          child.name?.toLowerCase?.() || '';
-
-        if (
-          materialName.includes('body') ||
-          materialName.includes('paint') ||
-          materialName.includes('car') ||
-          meshName.includes('body')
-        ) {
-
+        if (child.material) {
           child.material = child.material.clone();
+        }
 
+        const name = child.name?.toLowerCase?.() || '';
+        const matName = child.material?.name?.toLowerCase?.() || '';
+
+        if (name.includes('body') || matName.includes('body')) {
           child.material.color = new THREE.Color(color);
-
-          child.material.metalness = 0.7;
+          child.material.metalness = 0.6;
           child.material.roughness = 0.35;
-
         }
       }
     });
-
   }, [scene, color]);
 
   return (
-    <group
-      ref={group}
-      {...props}
-      dispose={null}
-    >
+    <>
+      {/* 🌍 إضاءة واقعية HDR */}
+      <Environment preset="studio" />
 
-      <primitive
-        object={scene}
-        scale={1.6}
-        position={[0, -1.2, 0]}
-        rotation={[0, Math.PI / 4, 0]}
+      {/* 💡 ظل تحت السيارة */}
+      <ContactShadows
+        position={[0, -1.4, 0]}
+        opacity={0.6}
+        scale={10}
+        blur={2.5}
+        far={4}
       />
 
-    </group>
+      {/* 🎮 تحكم بالكاميرا */}
+      <OrbitControls
+        enableZoom={true}
+        enablePan={false}
+        maxPolarAngle={Math.PI / 2.2}
+        minPolarAngle={Math.PI / 3}
+        autoRotate
+        autoRotateSpeed={1}
+      />
+
+      {/* 🚗 السيارة */}
+      <group ref={group}>
+        <primitive
+          object={scene}
+          scale={1.7}
+          position={[0, -1.3, 0]}
+          rotation={[0, Math.PI / 4, 0]}
+        />
+      </group>
+    </>
   );
 }
 
