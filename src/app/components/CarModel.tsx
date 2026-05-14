@@ -2,47 +2,74 @@ import React, { useRef, useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
-export function CarModel({ color = '#ff0000', ...props }: { color?: string; [key: string]: any }) {
+export function CarModel({
+  color = '#111111',
+  ...props
+}: {
+  color?: string;
+  [key: string]: any;
+}) {
+
   const group = useRef<THREE.Group>(null);
-  
-  // We use a free Ferrari model from three.js examples
-  const { nodes, materials } = useGLTF('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/ferrari.glb') as any;
-  
-  // Update colors safely when the color prop changes
+
+  // موديل الـ Defender
+  const { scene } = useGLTF('/models/defender.glb');
+
   useEffect(() => {
-    if (!materials) return;
-    
-    // Traverse all materials and update any that might be the car body
-    Object.values(materials).forEach((mat: any) => {
-      const name = mat.name.toLowerCase();
-      // The ferrari model body material is often named "body" or "paint"
-      if (name.includes('body') || name.includes('paint') || name.includes('car')) {
-        mat.color.set(color);
-        mat.needsUpdate = true;
+
+    if (!scene) return;
+
+    scene.traverse((child: any) => {
+
+      if (child.isMesh) {
+
+        child.castShadow = true;
+        child.receiveShadow = true;
+
+        // تغيير لون البودي فقط
+        const materialName =
+          child.material?.name?.toLowerCase?.() || '';
+
+        const meshName =
+          child.name?.toLowerCase?.() || '';
+
+        if (
+          materialName.includes('body') ||
+          materialName.includes('paint') ||
+          materialName.includes('car') ||
+          meshName.includes('body')
+        ) {
+
+          child.material = child.material.clone();
+
+          child.material.color = new THREE.Color(color);
+
+          child.material.metalness = 0.7;
+          child.material.roughness = 0.35;
+
+        }
       }
     });
-    
-    // Also try to find meshes directly in case material names are generic
-    if (nodes) {
-      Object.values(nodes).forEach((node: any) => {
-        if (node.isMesh && node.name.toLowerCase().includes('body')) {
-          if (node.material) {
-            node.material.color.set(color);
-            node.material.needsUpdate = true;
-          }
-        }
-      });
-    }
-  }, [color, materials, nodes]);
 
-  // Find the root object
-  const rootObject = nodes.Scene || nodes._rootJoint || Object.values(nodes)[0];
+  }, [scene, color]);
 
   return (
-    <group ref={group} {...props} dispose={null}>
-      {rootObject && <primitive object={rootObject} />}
+    <group
+      ref={group}
+      {...props}
+      dispose={null}
+    >
+
+      <primitive
+        object={scene}
+        scale={1.6}
+        position={[0, -1.2, 0]}
+        rotation={[0, Math.PI / 4, 0]}
+      />
+
     </group>
   );
 }
 
-useGLTF.preload('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/ferrari.glb');
+useGLTF.preload('/models/defender.glb');
+```
