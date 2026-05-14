@@ -1,12 +1,15 @@
-tsx
+tsx id="carmodel_fixed"
 import React, { useRef, useEffect } from 'react';
-import { useGLTF, ContactShadows, Environment, OrbitControls } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
-export function CarModel(){ color = '#111111' }: { color?: string }) {
+type CarProps = {
+  color?: string;
+};
+
+export function CarModel({ color = '#111111' }: CarProps) {
   const group = useRef<THREE.Group>(null);
 
-  // 🚗 موديل Defender المحلي
   const { scene } = useGLTF('/models/defender.glb');
 
   useEffect(() => {
@@ -34,40 +37,16 @@ export function CarModel(){ color = '#111111' }: { color?: string }) {
   }, [scene, color]);
 
   return (
-    <>
-      {/* 🌍 إضاءة واقعية HDR */}
-      <Environment preset="studio" />
-
-      {/* 💡 ظل تحت السيارة */}
-      <ContactShadows
-        position={[0, -1.4, 0]}
-        opacity={0.6}
-        scale={10}
-        blur={2.5}
-        far={4}
+    <group ref={group}>
+      <primitive
+        object={scene}
+        scale={1.7}
+        position={[0, -1.3, 0]}
+        rotation={[0, Math.PI / 4, 0]}
       />
-
-      {/* 🎮 تحكم بالكاميرا */}
-      <OrbitControls
-        enableZoom={true}
-        enablePan={false}
-        maxPolarAngle={Math.PI / 2.2}
-        minPolarAngle={Math.PI / 3}
-        autoRotate
-        autoRotateSpeed={1}
-      />
-
-      {/* 🚗 السيارة */}
-      <group ref={group}>
-        <primitive
-          object={scene}
-          scale={1.7}
-          position={[0, -1.3, 0]}
-          rotation={[0, Math.PI / 4, 0]}
-        />
-      </group>
-    </>
+    </group>
   );
 }
 
 useGLTF.preload('/models/defender.glb');
+
