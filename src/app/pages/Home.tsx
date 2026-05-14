@@ -27,25 +27,18 @@ export function Home() {
   return (
     <div className="bg-black min-h-screen text-white selection:bg-red-500 selection:text-white">
       {/* 3D HERO CONFIGURATOR */}
-      <section className="relative w-full">
-        <CarConfigurator />
-        
-        {/* Header Overlay */}
-        <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex flex-col md:flex-row justify-between items-center gap-4 z-10 pointer-events-none">
-          <img
-            src="https://i.im.ge/eBIjhY/Untitled_design_2_.png"
-            alt="Octopus Logo"
-            className="w-24 md:w-32 drop-shadow-2xl"
-          />
-          <div className="text-center md:text-right bg-black/40 backdrop-blur-sm p-4 rounded-xl border border-white/10 w-[90%] md:w-auto mt-4 md:mt-0">
-            <h1 className="text-2xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-              {t('welcomeTitle')}
-            </h1>
-            <p className="text-gray-300 text-sm md:text-xl mt-2 max-w-sm mx-auto md:ml-auto md:mr-0">
-              {t('welcomeSubtitle')}
-            </p>
-          </div>
+      <section className="w-full flex flex-col relative bg-black">
+        {/* Welcome Text */}
+        <div className="w-full px-4 pt-8 pb-4 text-center z-10">
+          <h1 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 max-w-4xl mx-auto leading-tight">
+            {t('welcomeTitle')}
+          </h1>
+          <p className="text-gray-300 text-base md:text-xl mt-3 max-w-2xl mx-auto">
+            {t('welcomeSubtitle')}
+          </p>
         </div>
+        
+        <CarConfigurator />
       </section>
 
       {/* SERVICES */}
