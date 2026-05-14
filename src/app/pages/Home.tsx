@@ -1,3 +1,5 @@
+:::writing{variant="standard" id="56482"}
+tsx
 import { useLanguage } from '../context/LanguageContext';
 import { Palette, Sparkles, Car, ShieldCheck } from 'lucide-react';
 import { CarConfigurator } from '../components/CarConfigurator';
@@ -30,7 +32,7 @@ export function Home() {
       {/* HERO SECTION */}
       <section className="relative w-full bg-black pt-28 md:pt-36 lg:pt-40 overflow-hidden">
 
-        {/* خلفية خفيفة */}
+        {/* خلفية */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-red-600/20 blur-[140px] rounded-full pointer-events-none" />
 
         {/* النص */}
@@ -76,6 +78,7 @@ export function Home() {
           >
             {t('welcomeSubtitle')}
           </motion.p>
+
         </div>
 
         {/* السيارة */}
@@ -128,6 +131,7 @@ export function Home() {
                 group
               "
             >
+
               <div className="
                 w-16
                 h-16
@@ -155,10 +159,12 @@ export function Home() {
               <p className="text-gray-400 leading-relaxed">
                 {service.description}
               </p>
+
             </motion.div>
           ))}
 
         </div>
+
       </section>
 
       {/* CTA */}
@@ -233,9 +239,9 @@ export function Home() {
           </motion.div>
 
         </div>
+
       </section>
 
     </div>
   );
 }
-```
