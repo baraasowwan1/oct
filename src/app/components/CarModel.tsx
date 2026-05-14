@@ -5,12 +5,12 @@ import * as THREE from 'three';
 export function CarModel({ color = '#ff0000', ...props }: { color?: string; [key: string]: any }) {
   const group = useRef<THREE.Group>(null);
   
-  // We use a free placeholder Porsche model from pmndrs
-  const { nodes, materials } = useGLTF('https://vazxmixyzorokpkymkzz.supabase.co/storage/v1/object/public/models/porsche-911/model.gltf') as any;
+  // We use a free Ferrari model from three.js examples
+  const { nodes, materials } = useGLTF('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/ferrari.glb') as any;
   
-  // Update the car body material color
-  if (materials.paint) {
-    materials.paint.color = new THREE.Color(color);
+  // The ferrari model has a body material
+  if (materials.body) {
+    materials.body.color = new THREE.Color(color);
   }
 
   // Find the root object
@@ -23,4 +23,4 @@ export function CarModel({ color = '#ff0000', ...props }: { color?: string; [key
   );
 }
 
-useGLTF.preload('https://vazxmixyzorokpkymkzz.supabase.co/storage/v1/object/public/models/porsche-911/model.gltf');
+useGLTF.preload('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/ferrari.glb');
