@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { useGLTF, ContactShadows, Environment, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
-export function CarShowroom({ color = '#111111' }: { color?: string }) {
+export function CarModel(){ color = '#111111' }: { color?: string }) {
   const group = useRef<THREE.Group>(null);
 
   // 🚗 موديل Defender المحلي
