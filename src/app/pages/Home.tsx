@@ -1,5 +1,4 @@
-:::writing{variant="standard" id="56482"}
-tsx
+
 import { useLanguage } from '../context/LanguageContext';
 import { Palette, Sparkles, Car, ShieldCheck } from 'lucide-react';
 import { CarConfigurator } from '../components/CarConfigurator';
