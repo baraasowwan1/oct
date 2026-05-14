@@ -13,7 +13,7 @@ export function CarModel({
   const group = useRef<THREE.Group>(null);
 
   // موديل الـ Defender
-  const { scene } = useGLTF('https://modelviewer.dev/shared-assets/models/Astronaut.glb');
+  const { scene } = useGLTF('/models/defender.glb');
 
   useEffect(() => {
 
