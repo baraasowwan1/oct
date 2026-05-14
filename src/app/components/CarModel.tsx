@@ -13,7 +13,9 @@ export function CarModel({
   const group = useRef<THREE.Group>(null);
 
   // موديل الـ Defender
-  const { scene } = useGLTF('/models/defender.glb');
+  const { scene } = useGLTF(
+  'https://rawcdn.githack.com/KhronosGroup/glTF-Sample-Models/master/2.0/Car/glTF-Binary/Car.glb'
+  );
 
   useEffect(() => {
 
